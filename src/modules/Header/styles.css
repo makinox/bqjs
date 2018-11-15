@@ -2,11 +2,11 @@ header {
   display: grid;
 }
 
-header .bottom {
+.bottom {
   display: none;
 }
 
-header .top {
+.top {
   display: grid;
   grid-template-columns: minmax(auto, .9fr) repeat(4, auto);
   grid-gap: 10px;
@@ -16,16 +16,16 @@ header .top {
   box-shadow: 0 1px 10px 1px rgba(0, 0, 0, .3);
 }
 
-header .top img {
+.top img {
   width: 60px;
   height: 60px;
 }
 
-header .top h1 {
+.top h1 {
   margin: 0;
 }
 
-header .top div:first-of-type {
+.top div:first-of-type {
   display: grid;
   grid-template-columns: repeat(2, auto);
   align-items: center;
@@ -44,19 +44,19 @@ header nav div i:hover {
 }
 
 @media (max-width: 370px) {
-  header .top {
+  .top {
     grid-template-columns: 1fr;
   }
 
-  header .top div {
+  .top div {
     display: none;
   }
 
-  header .top div:first-of-type {
+  .top div:first-of-type {
     justify-content: center;
   }
 
-  header .bottom {
+  .bottom {
     display: grid;
     grid-template-columns: repeat(4, auto);
     grid-gap: 10px;

@@ -1,4 +1,4 @@
-.heroContainer {
+.hero-container {
   display: grid;
   grid-template-columns: minmax(auto, 1100px);
   justify-content: center;
@@ -47,6 +47,7 @@
   border-radius: 20px;
   box-shadow: 3px 3px 15px 0 rgba(0, 0, 0, .3);
   margin-left: 10px;
+  letter-spacing: 1px;
 }
 
 .baq-button:hover {
