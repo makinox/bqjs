@@ -1,0 +1,23 @@
+<svelte:head>
+	<title>BarranquillaJS: Comunidad de javascript Barranquillera</title>
+</svelte:head>
+
+<Header />
+<Hero />
+<Members members="{memberList}" />
+
+<script>
+	import memberList from "./memberList.js";
+	export default {
+	  data() {
+	    return {
+	      memberList
+	    };
+	  },
+	  components: {
+	    Header: "../components/Header.html",
+	    Hero: "../components/Hero.html",
+	    Members: "../components/Members.html"
+	  }
+	};
+</script>

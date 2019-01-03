@@ -1,0 +1,63 @@
+<li class:member-flex-item="isMember" class:organizer-flex-item="isOrganizer">
+	<div class:member-image-cropper="isMember" class:organizer-image-cropper="isOrganizer">
+		<img src={photo} alt="foto de {name}" title="{name}" class="member-photo">
+	</div>
+	{#if isOrganizer}
+	<div class="member-name">{name}</div>
+	{/if}
+</li>
+
+<script>
+  export default {
+    computed: {
+      isMember: ({ role }) => role == "member",
+      isOrganizer: ({ role }) => role == "organizer"
+    }
+  };
+</script>
+
+<style>
+  .member-name {
+    margin-top: 16px;
+    font-weight: 400;
+    font-size: 2vh;
+  }
+  .member-flex-item {
+    padding: 1vh;
+    width: 10vh;
+    height: 10vh;
+    line-height: 3vh;
+    text-align: center;
+  }
+  .organizer-flex-item {
+    width: 20vh;
+    height: 20vh;
+    padding: 1vh;
+    line-height: 3vh;
+    text-align: center;
+  }
+  .member-image-cropper {
+    width: 10vh;
+    height: 10vh;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .organizer-image-cropper {
+    width: 15vh;
+    height: 15vh;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .member-photo {
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
