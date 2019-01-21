@@ -11,21 +11,19 @@
 			</div>
 		</div>
 		<div class="map">
-      <img src="/b2.svg" alt="Mapa de Barranquilla" />
-    </div>
+			<img src="/b2.svg" alt="Mapa de Barranquilla" />
+		</div>
 	</div>
 </div>
 
 <style>
   .hero-container {
     display: grid;
-    grid-template-columns: minmax(auto, 1125px);
+    grid-template-columns: minmax(auto, 1124px);
     justify-content: center;
   }
-
   .hero {
     color: #233034;
-    font-size: 32px;
     line-height: 1.36;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -38,6 +36,7 @@
   }
   .text {
     font-weight: 300;
+    font-size: 1.4rem;
   }
   .baq-button {
     background: #ffd121;
@@ -78,6 +77,12 @@
     }
     .map img {
       width: 90%;
+    }
+  }
+
+  @media screen and (min-width: 620px) {
+    .text {
+      font-size: 2rem;
     }
   }
 </style>

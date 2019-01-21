@@ -4,15 +4,22 @@
 
 <Header />
 <Hero />
-<Members members="{memberList}" />
+<Members members="{members}" />
 
 <script>
 	import memberList from "./memberList.js";
 	export default {
-	  data() {
-	    return {
-	      memberList
-	    };
+	  preload() {
+	    return this.fetch("members.json")
+				.then(res => res.json())
+				.then(res => {
+					return {
+						members: res
+					}
+				})
+				.catch(err => {
+					console.warn(err);
+				});
 	  },
 	  components: {
 	    Header: "../components/Header.html",
