@@ -1,77 +1,80 @@
-const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlWebPackPlugin = require('html-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack');
+const config = require('sapper/config/webpack.js');
+const pkg = require('./package.json');
+require('dotenv').config();
+
+const mode = process.env.NODE_ENV;
+const dev = mode === 'development';
 
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
-  },
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          // Using  MiniCssExtractPlugin instead "style-loader" in order to extract CSS into separate files.
-          // And avoid inlined style into JS.
-          MiniCssExtractPlugin.loader,
-          { loader: 'css-loader', options: { modules: true, camelCase: true } }
-        ]
-      },
-      {
-        test: /\.html$/,
-        use: [
-          {
-            loader: 'html-loader',
-            options: { minimize: true }
-          }
-        ]
-      },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader',
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              mozjpeg: {
-                progressive: true,
-                quality: 65
-              },
-              // optipng.enabled: false will disable optipng
-              optipng: {
-                enabled: false
-              },
-              pngquant: {
-                quality: '65-90',
-                speed: 4
-              },
-              gifsicle: {
-                interlaced: false
-              },
-              // the webp option will enable WEBP
-              webp: {
-                quality: 75
-              }
-            }
-          }
-        ]
-      }
-    ]
-  },
-  plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new MiniCssExtractPlugin({
-      filename: 'styles/[name].[chunkhash:8].css',
-      chunkFilename: 'styles/[name].[chunkhash:8].css'
-    }),
-    new HtmlWebPackPlugin({
-      template: './index.html',
-      filename: './index.html'
-    }),
-    new CopyWebpackPlugin([{ from: './src/img', to: 'img' }])
-  ]
-}
+	client: {
+		entry: config.client.entry(),
+		output: config.client.output(),
+		resolve: {
+			extensions: ['.js', '.json', '.html'],
+			mainFields: ['svelte', 'module', 'browser', 'main']
+		},
+		module: {
+			rules: [
+				{
+					test: /\.html$/,
+					use: {
+						loader: 'svelte-loader',
+						options: {
+							dev,
+							hydratable: true,
+							hotReload: true
+						}
+					}
+				}
+			]
+		},
+		mode,
+		plugins: [
+			dev && new webpack.HotModuleReplacementPlugin(),
+			new webpack.DefinePlugin({
+				'process.browser': true,
+				'process.env.NODE_ENV': JSON.stringify(mode),
+				'process.env.SIG_ID': process.env.SIG_ID,
+				'process.env.SIG': process.env.SIG
+			}),
+		].filter(Boolean),
+		devtool: dev && 'inline-source-map'
+	},
+
+	server: {
+		entry: config.server.entry(),
+		output: config.server.output(),
+		target: 'node',
+		resolve: {
+			extensions: ['.js', '.json', '.html'],
+			mainFields: ['svelte', 'module', 'browser', 'main']
+		},
+		externals: Object.keys(pkg.dependencies).concat('encoding'),
+		module: {
+			rules: [
+				{
+					test: /\.html$/,
+					use: {
+						loader: 'svelte-loader',
+						options: {
+							css: false,
+							generate: 'ssr',
+							dev
+						}
+					}
+				}
+			]
+		},
+		mode: process.env.NODE_ENV,
+		performance: {
+			hints: false // it doesn't matter if server.js is large
+		}
+	},
+
+	serviceworker: {
+		entry: config.serviceworker.entry(),
+		output: config.serviceworker.output(),
+		mode: process.env.NODE_ENV
+	}
+};
