@@ -52,7 +52,10 @@
     color: #393939;
   }
   .flex-container-organizers {
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3,minmax(auto, 1fr));
+    justify-content: center;
+    justify-items: center;
   }
   .flex-container-members {
     justify-content: space-between;
